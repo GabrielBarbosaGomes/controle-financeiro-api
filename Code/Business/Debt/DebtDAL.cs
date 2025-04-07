@@ -13,44 +13,56 @@ namespace financeiroApi.Code.Business.Debt
         {
         }
 
-        public List<DebtResponse> GetAllExpenses(DebtResponse filtro)
+        public List<DebtResponse> GetAllDebts(DebtRequest filtro)
         {
             DebtDALSQL dalSQL = new();
             DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@CodUsuario", filtro.CodUsuario);
 
-            if (filtro.Id != null)
-            {
-                parameters.Add("@Id", filtro.Id);
-            }
+            if (filtro.codDispesaFixa != null)
+                parameters.Add("@codDispesaFixa", filtro.codDispesaFixa);
 
-            if (!string.IsNullOrWhiteSpace(filtro.Mes))
-            {
-                parameters.Add("@Mes", filtro.Mes);
-            }
+            if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaFixa))
+                parameters.Add("@NomeDispesaFixa", filtro.NomeDispesaFixa);
 
-            if (filtro.Saldo.HasValue)
-            {
-                parameters.Add("@Saldo", filtro.Saldo);
-            }
+            if (filtro.DataDispesaFixa.HasValue)
+                parameters.Add("@DataDispesaFixa", filtro.DataDispesaFixa);
 
-            if (filtro.DataCriacao.HasValue)
-            {
-                parameters.Add("@DataCriacao", filtro.DataCriacao);
-            }
+            if (filtro.codDispesaVariavel != null)
+                parameters.Add("@codDispesaVariavel", filtro.codDispesaVariavel);
 
-            if (filtro.MesDispesa.HasValue)
-            {
-                parameters.Add("@MesDispesa", filtro.MesDispesa);
-            }
+            if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaVariavel))
+                parameters.Add("@NomeDispesaVariavel", filtro.NomeDispesaVariavel);
+
+            if (filtro.DataDispesaVariavel.HasValue)
+                parameters.Add("@DataDispesaVariavel", filtro.DataDispesaVariavel);
 
             return Db.Query<DebtResponse>(dalSQL.GetAllDebt(filtro), parameters).ToList();
         }
 
-        public void InsertExpenses(DebtInsert expense)
+        public List<DebtFixedResponse> GetDebtFixed(DebtRequest filtro)
+        {
+            DebtDALSQL dalSQL = new();
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@CodUsuario", filtro.CodUsuario);
+
+            if (filtro.codDispesaFixa != null)
+                parameters.Add("@codDispesaFixa", filtro.codDispesaFixa);
+
+            if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaFixa))
+                parameters.Add("@NomeDispesaFixa", filtro.NomeDispesaFixa);
+
+            if (filtro.DataDispesaFixa.HasValue)
+                parameters.Add("@DataDispesaFixa", filtro.DataDispesaFixa);
+
+            return Db.Query<DebtFixedResponse>(dalSQL.GetDebtFixed(filtro), parameters).ToList();
+        }
+
+        public void InsertDebtfixed(DebtFixedResponse data)
         {
             DebtDALSQL dalSQL = new();
 
-            Db.Execute(dalSQL.InsertDebt(), expense);
+            Db.Execute(dalSQL.InsertDebtfixed(), data);
         }
     }
 }

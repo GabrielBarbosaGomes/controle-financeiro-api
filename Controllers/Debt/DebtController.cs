@@ -15,17 +15,24 @@ namespace financeiroApi.Controllers.Debt
             _bll = bll;
         }
 
-        [HttpGet("meses/get")]
-        public IActionResult GetAllExpenses([FromQuery] DebtResponse filtro)
+        [HttpGet("get")]
+        public IActionResult GetAllDebts([FromQuery] DebtRequest filtro)
         {
 
-            return Ok(_bll.GetAllExpenses(filtro));
+            return Ok(_bll.GetAllDebts(filtro));
         }
 
-        [HttpPost("insert")]
-        public IActionResult InsertExpenses([FromBody] DebtInsert expense)
+        [HttpGet("fixed/get")]
+        public IActionResult GetDebtFixed([FromQuery] DebtRequest filtro)
         {
-            _bll.InsertExpenses(expense);
+
+            return Ok(_bll.GetDebtFixed(filtro));
+        }
+
+        [HttpPost("fixed/insert")]
+        public IActionResult InsertDebtfixed([FromBody] DebtFixedResponse data)
+        {
+            _bll.InsertDebtfixed(data);
 
             return Ok();
         }

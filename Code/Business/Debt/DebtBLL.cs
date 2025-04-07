@@ -13,16 +13,20 @@ namespace financeiroApi.Code.Business.Debt
             _dal = dal;
         }
 
-        public List<DebtResponse> GetAllExpenses(DebtResponse filtro)
+        public List<DebtResponse> GetAllDebts(DebtRequest filtro)
         {
-
-            return _dal.GetAllExpenses(filtro);
+            return _dal.GetAllDebts(filtro);
+        }
+        
+        public List<DebtFixedResponse> GetDebtFixed(DebtRequest filtro)
+        {
+            return _dal.GetDebtFixed(filtro);
         }
 
-        public void InsertExpenses(DebtInsert expense)
+        public void InsertDebtfixed(DebtFixedResponse data)
         {
 
-            _dal.InsertExpenses(expense);
+            _dal.InsertDebtfixed(data);
         }
     }
 }

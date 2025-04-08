@@ -15,6 +15,7 @@ namespace financeiroApi.Code.Business.Debt
 
         public List<DebtResponse> GetAllDebts(DebtRequest filtro)
         {
+            filtro.CodUsuario = 1;
             return _dal.GetAllDebts(filtro);
         }
         

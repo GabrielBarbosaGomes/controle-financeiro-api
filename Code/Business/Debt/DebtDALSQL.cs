@@ -20,13 +20,13 @@ namespace financeiroApi.Code.Business.Debt
 	                                ,var.Comentario ComentarioDispesaVariavel
                                 from db_financeiro.dispesa_fixa fix
                                 left join db_financeiro.dispesa_variavel var on var.Cod_usuario = fix.Cod_usuario
-                                WHERE fix.Cod_usuario = @CodUsuario");
+                                WHERE fix.Cod_usuario = @CodUsuario ");
 
             if (filtro.codDispesaFixa != null)
                 query.AppendLine("AND fix.Cod_dispesa_fixa = @codDispesaFixa");
 
             if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaFixa))
-                query.AppendLine("AND fix.Nome = @NomeDispesaFixa");
+                query.AppendLine("AND fix.Nome LIKE CONCAT('%', @NomeDispesaFixa, '%')");
 
             if (filtro.DataDispesaFixa.HasValue)
                 query.AppendLine("AND fix.Data = @DataDispesaFixa");
@@ -35,7 +35,7 @@ namespace financeiroApi.Code.Business.Debt
                 query.AppendLine("AND fix.Cod_dispesa_fixa = @codDispesaVariavel");
 
             if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaVariavel))
-                query.AppendLine("AND fix.Nome = @NomeDispesaVariavel");
+                query.AppendLine("AND fix.Nome LIKE CONCAT('%', @NomeDispesaVariavel, '%')");
 
             if (filtro.DataDispesaVariavel.HasValue)
                 query.AppendLine("AND fix.Data = @DataDispesaVariavel");

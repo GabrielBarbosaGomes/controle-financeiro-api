@@ -15,7 +15,7 @@ namespace financeiroApi.Controllers.Debt
             _bll = bll;
         }
 
-        [HttpGet("get")]
+        [HttpGet("all/get")]
         public IActionResult GetAllDebts([FromQuery] DebtRequest filtro)
         {
 

@@ -19,7 +19,7 @@ namespace financeiroApi.Code.Business.Debt
             return _dal.GetAllDebts(filtro);
         }
         
-        public List<DebtFixedResponse> GetDebtFixed(DebtRequest filtro)
+        public DebtFixedResponse GetDebtFixed(DebtRequest filtro)
         {
             return _dal.GetDebtFixed(filtro);
         }
@@ -28,6 +28,25 @@ namespace financeiroApi.Code.Business.Debt
         {
 
             _dal.InsertDebtfixed(data);
+        }
+        
+        public void UpdateDebtfixed(DebtFixedResponse data)
+        {
+
+            _dal.UpdateDebtfixed(data);
+        }
+
+        public void DeleteDebt(DeleteDebtRequest data)
+        {
+            if(data.NomeDispesa == "fixed")
+                _dal.DeleteDebtfixed(data);
+
+            if (data.NomeDispesa == "variable")
+                _dal.DeleteDebtVariable(data);
+
+            if(data.NomeDispesa == "all")
+                _dal.DeleteDebtAll(data);
+
         }
     }
 }

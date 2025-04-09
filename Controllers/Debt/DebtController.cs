@@ -36,5 +36,21 @@ namespace financeiroApi.Controllers.Debt
 
             return Ok();
         }
+
+        [HttpPut("fixed/update")]
+        public IActionResult UpdateDebtfixed([FromBody] DebtFixedResponse data)
+        {
+            _bll.UpdateDebtfixed(data);
+
+            return Ok();
+        }
+
+        [HttpDelete("delete")]
+        public IActionResult DeleteDebt([FromBody] DeleteDebtRequest data)
+        {
+            _bll.DeleteDebt(data);
+
+            return Ok();
+        }
     }
 }

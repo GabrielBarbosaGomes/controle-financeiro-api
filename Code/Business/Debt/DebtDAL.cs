@@ -4,6 +4,7 @@ using financeiroApi.Model.Produto;
 using Dapper;
 using financeiroApi.Model.Debt;
 using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
 
 namespace financeiroApi.Code.Business.Debt
 {
@@ -19,8 +20,8 @@ namespace financeiroApi.Code.Business.Debt
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@CodUsuario", filtro.CodUsuario);
 
-            if (filtro.codDispesaFixa != null)
-                parameters.Add("@codDispesaFixa", filtro.codDispesaFixa);
+            if (filtro.CodDispesaFixa != null)
+                parameters.Add("@CodDispesaFixa", filtro.CodDispesaFixa);
 
             if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaFixa))
                 parameters.Add("@NomeDispesaFixa", filtro.NomeDispesaFixa);
@@ -28,8 +29,8 @@ namespace financeiroApi.Code.Business.Debt
             if (filtro.DataDispesaFixa.HasValue)
                 parameters.Add("@DataDispesaFixa", filtro.DataDispesaFixa);
 
-            if (filtro.codDispesaVariavel != null)
-                parameters.Add("@codDispesaVariavel", filtro.codDispesaVariavel);
+            if (filtro.CodDispesaVariavel != null)
+                parameters.Add("@CodDispesaVariavel", filtro.CodDispesaVariavel);
 
             if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaVariavel))
                 parameters.Add("@NomeDispesaVariavel", filtro.NomeDispesaVariavel);
@@ -40,14 +41,14 @@ namespace financeiroApi.Code.Business.Debt
             return Db.Query<DebtResponse>(dalSQL.GetAllDebt(filtro), parameters).ToList();
         }
 
-        public List<DebtFixedResponse> GetDebtFixed(DebtRequest filtro)
+        public DebtFixedResponse GetDebtFixed(DebtRequest filtro)
         {
             DebtDALSQL dalSQL = new();
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@CodUsuario", filtro.CodUsuario);
 
-            if (filtro.codDispesaFixa != null)
-                parameters.Add("@codDispesaFixa", filtro.codDispesaFixa);
+            if (filtro.CodDispesaFixa != null)
+                parameters.Add("@CodDispesaFixa", filtro.CodDispesaFixa);
 
             if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaFixa))
                 parameters.Add("@NomeDispesaFixa", filtro.NomeDispesaFixa);
@@ -55,7 +56,7 @@ namespace financeiroApi.Code.Business.Debt
             if (filtro.DataDispesaFixa.HasValue)
                 parameters.Add("@DataDispesaFixa", filtro.DataDispesaFixa);
 
-            return Db.Query<DebtFixedResponse>(dalSQL.GetDebtFixed(filtro), parameters).ToList();
+            return Db.Query<DebtFixedResponse>(dalSQL.GetDebtFixed(filtro), parameters).FirstOrDefault();
         }
 
         public void InsertDebtfixed(DebtFixedResponse data)
@@ -63,6 +64,50 @@ namespace financeiroApi.Code.Business.Debt
             DebtDALSQL dalSQL = new();
 
             Db.Execute(dalSQL.InsertDebtfixed(), data);
+        }
+        
+        public void UpdateDebtfixed(DebtFixedResponse data)
+        {
+            DebtDALSQL dalSQL = new();
+
+            Db.Execute(dalSQL.UpdateDebtfixed(), data);
+        }
+        
+        public void DeleteDebtfixed(DeleteDebtRequest data)
+        {
+            DebtDALSQL dalSQL = new();
+
+            Db.Execute(dalSQL.DeleteDebtfixed(), data);
+        }
+        
+        public void DeleteDebtVariable(DeleteDebtRequest data)
+        {
+            DebtDALSQL dalSQL = new();
+
+            Db.Execute(dalSQL.DeleteDebtVariable(), data);
+        }
+        
+        public void DeleteDebtAll(DeleteDebtRequest data)
+        {
+            DebtDALSQL dalSQL = new();
+
+            Db.Open();
+
+            using (var tran = Db.BeginTransaction())
+            {
+                try
+                {
+                    Db.Execute(dalSQL.DeleteDebtfixed(), data, transaction: tran);
+                    Db.Execute(dalSQL.DeleteDebtVariable(), data, transaction: tran);
+
+                    tran.Commit();
+                }
+                catch
+                {
+                    tran.Rollback();
+                    throw;
+                }
+            }
         }
     }
 }

@@ -22,8 +22,8 @@ namespace financeiroApi.Code.Business.Debt
                                 left join db_financeiro.dispesa_variavel var on var.Cod_usuario = fix.Cod_usuario
                                 WHERE fix.Cod_usuario = @CodUsuario ");
 
-            if (filtro.codDispesaFixa != null)
-                query.AppendLine("AND fix.Cod_dispesa_fixa = @codDispesaFixa");
+            if (filtro.CodDispesaFixa != null)
+                query.AppendLine("AND fix.Cod_dispesa_fixa = @CodDispesaFixa");
 
             if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaFixa))
                 query.AppendLine("AND fix.Nome LIKE CONCAT('%', @NomeDispesaFixa, '%')");
@@ -31,8 +31,8 @@ namespace financeiroApi.Code.Business.Debt
             if (filtro.DataDispesaFixa.HasValue)
                 query.AppendLine("AND fix.Data = @DataDispesaFixa");
 
-            if (filtro.codDispesaVariavel != null)
-                query.AppendLine("AND fix.Cod_dispesa_fixa = @codDispesaVariavel");
+            if (filtro.CodDispesaVariavel != null)
+                query.AppendLine("AND fix.Cod_dispesa_fixa = @CodDispesaVariavel");
 
             if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaVariavel))
                 query.AppendLine("AND fix.Nome LIKE CONCAT('%', @NomeDispesaVariavel, '%')");
@@ -58,10 +58,10 @@ namespace financeiroApi.Code.Business.Debt
                                     ,fix.`Data`
                                     ,fix.Data_atualizacao DataAtualizacao
                                 FROM db_financeiro.dispesa_fixa fix
-                                WHERE fix.Cod_usuario = @CodUsuario");
+                                WHERE fix.Cod_usuario = @CodUsuario ");
 
-            if (filtro.codDispesaFixa != null)
-                query.AppendLine("AND fix.Cod_dispesa_fixa = @codDispesaFixa");
+            if (filtro.CodDispesaFixa != null)
+                query.AppendLine("AND fix.Cod_dispesa_fixa = @CodDispesaFixa");
 
             if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaFixa))
                 query.AppendLine("AND fix.Nome = @NomeDispesaFixa");
@@ -98,5 +98,38 @@ namespace financeiroApi.Code.Business.Debt
                      ,@Data
                      ,@DataAtualizacao)";
         }
+
+        public string UpdateDebtfixed()
+        {
+            return @"UPDATE db_financeiro.dispesa_fixa
+                        SET     Nome= @Nome
+                                ,Valor = @Valor
+                                ,Valor_parcela = @ValorParcela
+                                ,Quantidade_parcelas = @QuantidadeParcelas
+                                ,Tempo_indeterminado= @TempoIndeterminado
+                                ,Finalizado= @Finalizado
+                                ,Comentario= @Comentario
+                                ,`Data`= @Data
+                                ,Data_Atualizacao = now()
+                        WHERE Cod_dispesa_fixa = @CodDispesaFixa
+                        AND Cod_usuario = @CodUsuario";
+        }
+
+        public string DeleteDebtfixed()
+        {
+            return @"DELETE FROM db_financeiro.dispesa_fixa
+                     WHERE Cod_dispesa_fixa = @CodDispesaFixa
+                     AND Cod_usuario = @codUsuario";
+                    
+        }
+
+        public string DeleteDebtVariable()
+        {
+            return @"DELETE FROM db_financeiro.dispesa_variavel
+                     WHERE Cod_dispesa_variavel = @CodDispesaVariavel;
+                     AND Cod_usuario = @codUsuario";
+
+        }
+        
     }
 }

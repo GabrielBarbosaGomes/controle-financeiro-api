@@ -30,10 +30,10 @@ namespace financeiroApi.Code.Business.Debt
             _dal.InsertDebtfixed(data);
         }
         
-        public void UpdateDebtfixed(DebtFixedResponse data)
+        public int UpdateDebtfixed(DebtFixedResponse data)
         {
-
-            _dal.UpdateDebtfixed(data);
+            var result = _dal.UpdateDebtfixed(data);
+            return result;
         }
 
         public void DeleteDebt(DeleteDebtRequest data)

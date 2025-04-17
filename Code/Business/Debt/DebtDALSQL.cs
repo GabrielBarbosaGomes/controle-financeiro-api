@@ -102,16 +102,15 @@ namespace financeiroApi.Code.Business.Debt
         public string UpdateDebtfixed()
         {
             return @"UPDATE db_financeiro.dispesa_fixa
-                        SET     Nome= @Nome
+                        SET     Nome = @Nome
                                 ,Valor = @Valor
                                 ,Valor_parcela = @ValorParcela
                                 ,Quantidade_parcelas = @QuantidadeParcelas
                                 ,Tempo_indeterminado= @TempoIndeterminado
                                 ,Finalizado= @Finalizado
                                 ,Comentario= @Comentario
-                                ,`Data`= @Data
                                 ,Data_Atualizacao = now()
-                        WHERE Cod_dispesa_fixa = @CodDispesaFixa
+                        WHERE Cod_dispesa_fixa = @Cod_dispesa_fixa
                         AND Cod_usuario = @CodUsuario";
         }
 

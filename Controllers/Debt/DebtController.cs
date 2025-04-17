@@ -34,7 +34,7 @@ namespace financeiroApi.Controllers.Debt
         {
             _bll.InsertDebtfixed(data);
 
-            return Ok();
+            return Ok(new { message = "Criado com sucesso" });
         }
 
         [HttpPut("fixed/update")]
@@ -42,7 +42,7 @@ namespace financeiroApi.Controllers.Debt
         {
             _bll.UpdateDebtfixed(data);
 
-            return Ok();
+            return Ok(new { message = "Atualizado com sucesso" });
         }
 
         [HttpDelete("delete")]

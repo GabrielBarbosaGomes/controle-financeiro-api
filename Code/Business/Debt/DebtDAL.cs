@@ -66,11 +66,11 @@ namespace financeiroApi.Code.Business.Debt
             Db.Execute(dalSQL.InsertDebtfixed(), data);
         }
         
-        public void UpdateDebtfixed(DebtFixedResponse data)
+        public int UpdateDebtfixed(DebtFixedResponse data)
         {
             DebtDALSQL dalSQL = new();
 
-            Db.Execute(dalSQL.UpdateDebtfixed(), data);
+            return Db.Execute(dalSQL.UpdateDebtfixed(), data);
         }
         
         public void DeleteDebtfixed(DeleteDebtRequest data)

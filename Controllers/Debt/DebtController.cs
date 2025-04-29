@@ -15,17 +15,63 @@ namespace financeiroApi.Controllers.Debt
             _bll = bll;
         }
 
-        [HttpGet("meses/get")]
-        public IActionResult GetAllExpenses([FromQuery] DebtResponse filtro)
+        [HttpGet("all/get")]
+        public IActionResult GetAllDebts([FromQuery] DebtRequest filtro)
         {
 
-            return Ok(_bll.GetAllExpenses(filtro));
+            return Ok(_bll.GetAllDebts(filtro));
         }
 
-        [HttpPost("insert")]
-        public IActionResult InsertExpenses([FromBody] DebtInsert expense)
+        [HttpGet("fixed/get")]
+        public IActionResult GetDebtFixed([FromQuery] DebtRequest filtro)
         {
-            _bll.InsertExpenses(expense);
+
+            return Ok(_bll.GetDebtFixed(filtro));
+        }
+
+        [HttpGet("variable/get")]
+        public IActionResult GetDebtVariable([FromQuery] DebtRequest filtro)
+        {
+
+            return Ok(_bll.GetDebtVariable(filtro));
+        }
+
+        [HttpPost("fixed/insert")]
+        public IActionResult InsertDebtFixed([FromBody] DebtFixedResponse data)
+        {
+            _bll.InsertDebtFixed(data);
+
+            return Ok(new { message = "Criado com sucesso" });
+        }
+
+        [HttpPost("variable/insert")]
+        public IActionResult InsertDebtvariable([FromBody] DebtVariableResponse data)
+        {
+            _bll.InsertDebtVariable(data);
+
+            return Ok(new { message = "Criado com sucesso" });
+        }
+
+        [HttpPut("fixed/update")]
+        public IActionResult UpdateDebtfixed([FromBody] DebtFixedResponse data)
+        {
+            _bll.UpdateDebtfixed(data);
+
+            return Ok(new { message = "Atualizado com sucesso" });
+        }
+
+        [HttpPut("variable/update")]
+        public IActionResult UpdateDebtVariable([FromBody] DebtFixedResponse data)
+        {
+            _bll.UpdateDebtVariable(data);
+
+            return Ok(new { message = "Atualizado com sucesso" });
+        }
+
+        [HttpDelete("delete")]
+        public IActionResult DeleteDebt([FromBody] DeleteDebtRequest data)
+        {
+            _bll.DeleteDebt(data);
 
             return Ok();
         }

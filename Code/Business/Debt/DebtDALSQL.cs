@@ -1,6 +1,7 @@
 ﻿using financeiroApi.Model.Produto;
 using financeiroApi.Model.Debt;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace financeiroApi.Code.Business.Debt
 {
@@ -42,11 +43,11 @@ namespace financeiroApi.Code.Business.Debt
 
             return query.ToString();
         }
-        
+
         public string GetDebtFixed(DebtRequest filtro)
         {
             StringBuilder query = new();
-            query.AppendFormat(@"SELECT fix.Cod_dispesa_fixa
+            query.AppendFormat(@"SELECT fix.Cod_dispesa_fixa Id
                                     ,fix.Cod_usuario codUsuario
                                     ,fix.Nome
                                     ,fix.Valor
@@ -64,7 +65,7 @@ namespace financeiroApi.Code.Business.Debt
                 query.AppendLine("AND fix.Cod_dispesa_fixa = @CodDispesaFixa");
 
             if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaFixa))
-                query.AppendLine("AND fix.Nome = @NomeDispesaFixa");
+                query.AppendLine("AND fix.Nome LIKE CONCAT('%', @NomeDispesaFixa, '%')");
 
             if (filtro.DataDispesaFixa.HasValue)
                 query.AppendLine("AND fix.Data = @DataDispesaFixa");
@@ -72,7 +73,31 @@ namespace financeiroApi.Code.Business.Debt
             return query.ToString();
         }
 
-        public string InsertDebtfixed()
+        public string GetDebtVariable(DebtRequest filtro)
+        {
+            StringBuilder query = new();
+            query.AppendFormat(@"SELECT var.Cod_dispesa_variavel Id
+                                    ,var.Cod_usuario codUsuario
+                                    ,var.Nome
+                                    ,var.Valor
+                                    ,var.Comentario
+                                    ,var.Data
+                                FROM db_financeiro.dispesa_variavel var
+                                WHERE var.Cod_usuario = @CodUsuario ");
+
+            if (filtro.CodDispesaFixa != null)
+                query.AppendLine("AND var.Cod_dispesa_variavel = @CodDispesaVariavel");
+
+            if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaVariavel))
+                query.AppendLine("AND var.Nome LIKE CONCAT('%', @NomeDispesaVariavel, '%')");
+
+            if (filtro.DataDispesaFixa.HasValue)
+                query.AppendLine("AND var.Data = @DataDispesaVariavel");
+
+            return query.ToString();
+        }
+
+        public string InsertDebtFixed()
         {
             return @"INSERT INTO db_financeiro.dispesa_fixa
                     (
@@ -98,6 +123,22 @@ namespace financeiroApi.Code.Business.Debt
                      ,@Data
                      ,@DataAtualizacao)";
         }
+        public string InsertDebtVariable()
+        {
+            return @"INSERT INTO db_financeiro.dispesa_variavel
+                    (
+                    Cod_usuario
+                    ,Nome
+                    ,Valor
+                    ,Comentario
+                    ,Data)
+                     VALUES(
+                      @CodUsuario
+                     ,@Nome
+                     ,@Valor
+                     ,@Comentario
+                     ,@Data)";
+        }
 
         public string UpdateDebtfixed()
         {
@@ -110,16 +151,27 @@ namespace financeiroApi.Code.Business.Debt
                                 ,Finalizado= @Finalizado
                                 ,Comentario= @Comentario
                                 ,Data_Atualizacao = now()
-                        WHERE Cod_dispesa_fixa = @Cod_dispesa_fixa
+                        WHERE Cod_dispesa_fixa = @Id
                         AND Cod_usuario = @CodUsuario";
         }
+        public string UpdateDebtVariable()
+        {
+            return @"UPDATE db_financeiro.dispesa_variavel
+                        SET     Nome = @Nome
+                                ,Valor = @Valor
+                                ,Comentario= @Comentario
+                                ,Data = now()
+                        WHERE Cod_dispesa_variavel = @Id
+                        AND Cod_usuario = @CodUsuario";
+        }
+
 
         public string DeleteDebtfixed()
         {
             return @"DELETE FROM db_financeiro.dispesa_fixa
                      WHERE Cod_dispesa_fixa = @CodDispesaFixa
                      AND Cod_usuario = @codUsuario";
-                    
+
         }
 
         public string DeleteDebtVariable()
@@ -129,6 +181,6 @@ namespace financeiroApi.Code.Business.Debt
                      AND Cod_usuario = @codUsuario";
 
         }
-        
+
     }
 }

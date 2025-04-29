@@ -19,20 +19,39 @@ namespace financeiroApi.Code.Business.Debt
             return _dal.GetAllDebts(filtro);
         }
         
-        public DebtFixedResponse GetDebtFixed(DebtRequest filtro)
+        public List<DebtFixedResponse> GetDebtFixed(DebtRequest filtro)
         {
+            filtro.CodUsuario = 1;
             return _dal.GetDebtFixed(filtro);
         }
+        
+        public List<DebtVariableResponse> GetDebtVariable(DebtRequest filtro)
+        {
+            filtro.CodUsuario = 1;
+            return _dal.GetDebtVariable(filtro);
+        }
 
-        public void InsertDebtfixed(DebtFixedResponse data)
+        public void InsertDebtFixed(DebtFixedResponse data)
         {
 
-            _dal.InsertDebtfixed(data);
+            _dal.InsertDebtFixed(data);
+        }
+        
+        public void InsertDebtVariable(DebtVariableResponse data)
+        {
+
+            _dal.InsertDebtVariable(data);
         }
         
         public int UpdateDebtfixed(DebtFixedResponse data)
         {
             var result = _dal.UpdateDebtfixed(data);
+            return result;
+        }
+
+        public int UpdateDebtVariable(DebtFixedResponse data)
+        {
+            var result = _dal.UpdateDebtVariable(data);
             return result;
         }
 

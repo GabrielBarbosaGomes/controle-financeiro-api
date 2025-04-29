@@ -41,7 +41,7 @@ namespace financeiroApi.Code.Business.Debt
             return Db.Query<DebtResponse>(dalSQL.GetAllDebt(filtro), parameters).ToList();
         }
 
-        public DebtFixedResponse GetDebtFixed(DebtRequest filtro)
+        public List<DebtFixedResponse> GetDebtFixed(DebtRequest filtro)
         {
             DebtDALSQL dalSQL = new();
             DynamicParameters parameters = new DynamicParameters();
@@ -56,14 +56,39 @@ namespace financeiroApi.Code.Business.Debt
             if (filtro.DataDispesaFixa.HasValue)
                 parameters.Add("@DataDispesaFixa", filtro.DataDispesaFixa);
 
-            return Db.Query<DebtFixedResponse>(dalSQL.GetDebtFixed(filtro), parameters).FirstOrDefault();
+            return Db.Query<DebtFixedResponse>(dalSQL.GetDebtFixed(filtro), parameters).ToList();
+        }
+        
+        public List<DebtVariableResponse> GetDebtVariable(DebtRequest filtro)
+        {
+            DebtDALSQL dalSQL = new();
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@CodUsuario", filtro.CodUsuario);
+
+            if (filtro.CodDispesaVariavel != null)
+                parameters.Add("@CodDispesaVariavel", filtro.CodDispesaVariavel);
+
+            if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaVariavel))
+                parameters.Add("@NomeDispesaVariavel", filtro.NomeDispesaVariavel);
+
+            if (filtro.DataDispesaVariavel.HasValue)
+                parameters.Add("@DataDispesaVariavel", filtro.DataDispesaVariavel);
+
+            return Db.Query<DebtVariableResponse>(dalSQL.GetDebtVariable(filtro), parameters).ToList();
         }
 
-        public void InsertDebtfixed(DebtFixedResponse data)
+        public void InsertDebtFixed(DebtFixedResponse data)
         {
             DebtDALSQL dalSQL = new();
 
-            Db.Execute(dalSQL.InsertDebtfixed(), data);
+            Db.Execute(dalSQL.InsertDebtFixed(), data);
+        }
+        
+        public void InsertDebtVariable(DebtVariableResponse data)
+        {
+            DebtDALSQL dalSQL = new();
+
+            Db.Execute(dalSQL.InsertDebtVariable(), data);
         }
         
         public int UpdateDebtfixed(DebtFixedResponse data)
@@ -71,6 +96,12 @@ namespace financeiroApi.Code.Business.Debt
             DebtDALSQL dalSQL = new();
 
             return Db.Execute(dalSQL.UpdateDebtfixed(), data);
+        }
+        public int UpdateDebtVariable(DebtFixedResponse data)
+        {
+            DebtDALSQL dalSQL = new();
+
+            return Db.Execute(dalSQL.UpdateDebtVariable(), data);
         }
         
         public void DeleteDebtfixed(DeleteDebtRequest data)

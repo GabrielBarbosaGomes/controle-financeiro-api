@@ -16,7 +16,7 @@
 
     public class DebtFixedResponse
     {
-        public int? Cod_dispesa_fixa { get; set; }
+        public int? Id { get; set; }
         public int? CodUsuario { get; set; }
         public string? Nome { get; set; }
         public double? Valor { get; set; }
@@ -27,6 +27,17 @@
         public string? Comentario { get; set; }
         public DateTime? Data { get; set; }
         public DateTime? DataAtualizacao { get; set; }
+
+    }
+
+    public class DebtVariableResponse
+    {
+        public int? Id { get; set; }
+        public int? CodUsuario { get; set; }
+        public string? Nome { get; set; }
+        public double? Valor { get; set; }
+        public string? Comentario { get; set; }
+        public DateTime? Data { get; set; }
 
     }
 

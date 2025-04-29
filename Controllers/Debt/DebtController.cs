@@ -29,10 +29,25 @@ namespace financeiroApi.Controllers.Debt
             return Ok(_bll.GetDebtFixed(filtro));
         }
 
-        [HttpPost("fixed/insert")]
-        public IActionResult InsertDebtfixed([FromBody] DebtFixedResponse data)
+        [HttpGet("variable/get")]
+        public IActionResult GetDebtVariable([FromQuery] DebtRequest filtro)
         {
-            _bll.InsertDebtfixed(data);
+
+            return Ok(_bll.GetDebtVariable(filtro));
+        }
+
+        [HttpPost("fixed/insert")]
+        public IActionResult InsertDebtFixed([FromBody] DebtFixedResponse data)
+        {
+            _bll.InsertDebtFixed(data);
+
+            return Ok(new { message = "Criado com sucesso" });
+        }
+
+        [HttpPost("variable/insert")]
+        public IActionResult InsertDebtvariable([FromBody] DebtVariableResponse data)
+        {
+            _bll.InsertDebtVariable(data);
 
             return Ok(new { message = "Criado com sucesso" });
         }
@@ -41,6 +56,14 @@ namespace financeiroApi.Controllers.Debt
         public IActionResult UpdateDebtfixed([FromBody] DebtFixedResponse data)
         {
             _bll.UpdateDebtfixed(data);
+
+            return Ok(new { message = "Atualizado com sucesso" });
+        }
+
+        [HttpPut("variable/update")]
+        public IActionResult UpdateDebtVariable([FromBody] DebtFixedResponse data)
+        {
+            _bll.UpdateDebtVariable(data);
 
             return Ok(new { message = "Atualizado com sucesso" });
         }

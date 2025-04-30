@@ -1,7 +1,5 @@
-﻿using financeiroApi.Model.Produto;
-using financeiroApi.Model.Debt;
+﻿using financeiroApi.Model.Debt;
 using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace financeiroApi.Code.Business.Debt
 {

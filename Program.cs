@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using financeiroApi.Code.Connection;
 using financeiroApi.Code.Business.Debt;
+using financeiroApi.Code.Business.Income;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<DebtDAL>();
 builder.Services.AddScoped<DebtBLL>();
+builder.Services.AddScoped<IncomeDAL>();
+builder.Services.AddScoped<IncomeBLL>();
 
 
 var app = builder.Build();

@@ -1,10 +1,6 @@
-﻿using financeiroApi.Code.Business.Produto;
-using financeiroApi.Code.Connection;
-using financeiroApi.Model.Produto;
+﻿using financeiroApi.Code.Connection;
 using Dapper;
 using financeiroApi.Model.Debt;
-using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
 
 namespace financeiroApi.Code.Business.Debt
 {

@@ -15,6 +15,9 @@
 
   <ItemGroup>
     <Compile Remove="financeiroApi.Tests\**\*.cs" />
+    <Content Remove="financeiroApi.Tests\**" />
+    <None Remove="financeiroApi.Tests\**" />
+    <EmbeddedResource Remove="financeiroApi.Tests\**" />
   </ItemGroup>
 
 </Project>

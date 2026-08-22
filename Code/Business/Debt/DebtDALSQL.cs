@@ -8,36 +8,20 @@ namespace financeiroApi.Code.Business.Debt
         public string GetAllDebt(DebtRequest filtro)
         {
             StringBuilder query = new();
-            query.AppendFormat(@"select 
-                                     fix.Cod_dispesa_fixa CodDispesaFixa
-	                                ,fix.Nome NomeDispesaFixa
-	                                ,fix.Valor ValorDispesaFixa
-	                                ,fix.Comentario ComentarioDispesaFixa
-	                                ,var.Cod_dispesa_variavel CodDispesaVariavel
-	                                ,var.Nome NomeDispesaVariavel
-	                                ,var.Valor ValorDispesaVariavel
-	                                ,var.Comentario ComentarioDispesaVariavel
-                                from db_financeiro.dispesa_fixa fix
-                                left join db_financeiro.dispesa_variavel var on var.Cod_usuario = fix.Cod_usuario
-                                WHERE fix.Cod_usuario = @CodUsuario ");
+            query.AppendFormat(@"SELECT MesAno, SUM(Total) TotalGasto
+                                FROM (
+                                    SELECT DATE_SUB(fix.Data, INTERVAL (DAY(fix.Data) - 1) DAY) MesAno, fix.Valor Total
+                                    FROM db_financeiro.dispesa_fixa fix
+                                    WHERE fix.Cod_usuario = @CodUsuario AND fix.Data IS NOT NULL
 
-            if (filtro.CodDispesaFixa != null)
-                query.AppendLine("AND fix.Cod_dispesa_fixa = @CodDispesaFixa");
+                                    UNION ALL
 
-            if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaFixa))
-                query.AppendLine("AND fix.Nome LIKE CONCAT('%', @NomeDispesaFixa, '%')");
-
-            if (filtro.DataDispesaFixa.HasValue)
-                query.AppendLine("AND fix.Data = @DataDispesaFixa");
-
-            if (filtro.CodDispesaVariavel != null)
-                query.AppendLine("AND fix.Cod_dispesa_fixa = @CodDispesaVariavel");
-
-            if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaVariavel))
-                query.AppendLine("AND fix.Nome LIKE CONCAT('%', @NomeDispesaVariavel, '%')");
-
-            if (filtro.DataDispesaVariavel.HasValue)
-                query.AppendLine("AND fix.Data = @DataDispesaVariavel");
+                                    SELECT DATE_SUB(var.Data, INTERVAL (DAY(var.Data) - 1) DAY) MesAno, var.Valor Total
+                                    FROM db_financeiro.dispesa_variavel var
+                                    WHERE var.Cod_usuario = @CodUsuario AND var.Data IS NOT NULL
+                                ) gastos
+                                GROUP BY MesAno
+                                ORDER BY MesAno DESC");
 
             return query.ToString();
         }
@@ -53,6 +37,7 @@ namespace financeiroApi.Code.Business.Debt
                                     ,fix.Quantidade_parcelas QuantidadeParcelas 
                                     ,fix.Tempo_indeterminado TempoIndeterminado
                                     ,fix.Finalizado
+                                    ,fix.Categoria
                                     ,fix.Comentario
                                     ,fix.`Data`
                                     ,fix.Data_atualizacao DataAtualizacao
@@ -78,18 +63,19 @@ namespace financeiroApi.Code.Business.Debt
                                     ,var.Cod_usuario codUsuario
                                     ,var.Nome
                                     ,var.Valor
+                                    ,var.Categoria
                                     ,var.Comentario
                                     ,var.Data
                                 FROM db_financeiro.dispesa_variavel var
                                 WHERE var.Cod_usuario = @CodUsuario ");
 
-            if (filtro.CodDispesaFixa != null)
+            if (filtro.CodDispesaVariavel != null)
                 query.AppendLine("AND var.Cod_dispesa_variavel = @CodDispesaVariavel");
 
             if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaVariavel))
                 query.AppendLine("AND var.Nome LIKE CONCAT('%', @NomeDispesaVariavel, '%')");
 
-            if (filtro.DataDispesaFixa.HasValue)
+            if (filtro.DataDispesaVariavel.HasValue)
                 query.AppendLine("AND var.Data = @DataDispesaVariavel");
 
             return query.ToString();
@@ -106,6 +92,7 @@ namespace financeiroApi.Code.Business.Debt
                     ,Quantidade_parcelas
                     ,Tempo_indeterminado
                     ,Finalizado
+                    ,Categoria
                     ,Comentario
                     ,`Data`
                     ,Data_atualizacao)
@@ -117,6 +104,7 @@ namespace financeiroApi.Code.Business.Debt
                      ,@QuantidadeParcelas
                      ,@TempoIndeterminado
                      ,@Finalizado
+                     ,@Categoria
                      ,@Comentario
                      ,@Data
                      ,@DataAtualizacao)";
@@ -128,12 +116,14 @@ namespace financeiroApi.Code.Business.Debt
                     Cod_usuario
                     ,Nome
                     ,Valor
+                    ,Categoria
                     ,Comentario
                     ,Data)
                      VALUES(
                       @CodUsuario
                      ,@Nome
                      ,@Valor
+                     ,@Categoria
                      ,@Comentario
                      ,@Data)";
         }
@@ -147,6 +137,7 @@ namespace financeiroApi.Code.Business.Debt
                                 ,Quantidade_parcelas = @QuantidadeParcelas
                                 ,Tempo_indeterminado= @TempoIndeterminado
                                 ,Finalizado= @Finalizado
+                                ,Categoria= @Categoria
                                 ,Comentario= @Comentario
                                 ,Data_Atualizacao = now()
                         WHERE Cod_dispesa_fixa = @Id
@@ -157,6 +148,7 @@ namespace financeiroApi.Code.Business.Debt
             return @"UPDATE db_financeiro.dispesa_variavel
                         SET     Nome = @Nome
                                 ,Valor = @Valor
+                                ,Categoria= @Categoria
                                 ,Comentario= @Comentario
                                 ,Data = now()
                         WHERE Cod_dispesa_variavel = @Id

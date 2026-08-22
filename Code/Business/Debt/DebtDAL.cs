@@ -16,24 +16,6 @@ namespace financeiroApi.Code.Business.Debt
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@CodUsuario", filtro.CodUsuario);
 
-            if (filtro.CodDispesaFixa != null)
-                parameters.Add("@CodDispesaFixa", filtro.CodDispesaFixa);
-
-            if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaFixa))
-                parameters.Add("@NomeDispesaFixa", filtro.NomeDispesaFixa);
-
-            if (filtro.DataDispesaFixa.HasValue)
-                parameters.Add("@DataDispesaFixa", filtro.DataDispesaFixa);
-
-            if (filtro.CodDispesaVariavel != null)
-                parameters.Add("@CodDispesaVariavel", filtro.CodDispesaVariavel);
-
-            if (!string.IsNullOrWhiteSpace(filtro.NomeDispesaVariavel))
-                parameters.Add("@NomeDispesaVariavel", filtro.NomeDispesaVariavel);
-
-            if (filtro.DataDispesaVariavel.HasValue)
-                parameters.Add("@DataDispesaVariavel", filtro.DataDispesaVariavel);
-
             return Db.Query<DebtResponse>(dalSQL.GetAllDebt(filtro), parameters).ToList();
         }
 

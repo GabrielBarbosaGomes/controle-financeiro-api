@@ -151,3 +151,7 @@ _Pvt_Extensions
 /obj/Debug/net8.0
 /bin/Debug/net8.0
 /obj
+
+# bin/obj em qualquer projeto da solução (ex: financeiroApi.Tests)
+**/bin/
+**/obj/

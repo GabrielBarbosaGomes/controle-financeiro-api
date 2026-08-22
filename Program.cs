@@ -3,6 +3,7 @@ using financeiroApi.Code.Connection;
 using financeiroApi.Code.Business.Debt;
 using financeiroApi.Code.Business.Income;
 using financeiroApi.Code.Business.Import;
+using financeiroApi.Code.Business.Dashboard;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,8 @@ builder.Services.AddScoped<DebtBLL>();
 builder.Services.AddScoped<IncomeDAL>();
 builder.Services.AddScoped<IncomeBLL>();
 builder.Services.AddScoped<ImportBLL>();
+builder.Services.AddScoped<DashboardDAL>();
+builder.Services.AddScoped<DashboardBLL>();
 
 
 var app = builder.Build();

@@ -2,16 +2,8 @@
 {
     public class DebtResponse
     {
-        public int? CodDispesaFixa { get; set; }
-        public string? NomeDispesaFixa { get; set; }
-        public double? ValorDispesaFixa { get; set; }
-        public string? ComentarioDispesaFixa { get; set; }
-        public DateTime? DataDispesaFixa { get; set; }
-        public int? CodDispesaVariavel {  get; set; }
-        public string? NomeDispesaVariavel { get; set; }
-        public double? ValorDispesaVariavel { get; set; }
-        public string? ComentarioDispesaVariavel { get; set; }
-        public DateTime? DataDispesaVariavel { get; set; }
+        public DateTime MesAno { get; set; }
+        public double TotalGasto { get; set; }
     }
 
     public class DebtFixedResponse
@@ -24,6 +16,7 @@
         public int? QuantidadeParcelas { get; set; }
         public bool? TempoIndeterminado { get; set; }
         public bool? Finalizado { get; set; }
+        public string? Categoria { get; set; }
         public string? Comentario { get; set; }
         public DateTime? Data { get; set; }
         public DateTime? DataAtualizacao { get; set; }
@@ -36,6 +29,7 @@
         public int? CodUsuario { get; set; }
         public string? Nome { get; set; }
         public double? Valor { get; set; }
+        public string? Categoria { get; set; }
         public string? Comentario { get; set; }
         public DateTime? Data { get; set; }
 

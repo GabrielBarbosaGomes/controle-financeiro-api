@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using financeiroApi.Code.Connection;
 using financeiroApi.Code.Business.Debt;
 using financeiroApi.Code.Business.Income;
+using financeiroApi.Code.Business.Import;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-builder.Services.AddSingleton<MySqlAccess>();
+builder.Services.AddScoped<MySqlAccess>();
 
 var corsPolicy = "_myAllowSpecificOrigins";
 
@@ -19,8 +20,8 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy.AllowAnyOrigin()  // Permite qualquer origem
-                  .AllowAnyMethod()   // Permite qualquer método (GET, POST, etc.)
-                  .AllowAnyHeader();  // Permite qualquer cabeçalho
+                  .AllowAnyMethod()   // Permite qualquer mï¿½todo (GET, POST, etc.)
+                  .AllowAnyHeader();  // Permite qualquer cabeï¿½alho
         });
 });
 
@@ -37,6 +38,7 @@ builder.Services.AddScoped<DebtDAL>();
 builder.Services.AddScoped<DebtBLL>();
 builder.Services.AddScoped<IncomeDAL>();
 builder.Services.AddScoped<IncomeBLL>();
+builder.Services.AddScoped<ImportBLL>();
 
 
 var app = builder.Build();

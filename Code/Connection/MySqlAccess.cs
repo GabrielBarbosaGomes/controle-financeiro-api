@@ -15,7 +15,11 @@ namespace financeiroApi.Code.Connection
         protected MySqlConnection Db {
             get
             {
-                string connectionString = _configuration.GetConnectionString("DefaultConnection");
+                string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                }
                 _db ??= new MySqlConnection(connectionString);
                 return _db;
             }

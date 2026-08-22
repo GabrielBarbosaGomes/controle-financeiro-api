@@ -1,0 +1,17 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: financeiro-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: senhabanco123
+      MYSQL_DATABASE: db_Financeiro
+    command: --lower-case-table-names=1
+    ports:
+      - "3306:3306"
+    volumes:
+      - financeiro-mysql-data:/var/lib/mysql
+      - ./database/criar_banco_financeiro.sql:/docker-entrypoint-initdb.d/01-criar_banco_financeiro.sql:ro
+
+volumes:
+  financeiro-mysql-data:
